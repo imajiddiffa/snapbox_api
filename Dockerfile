@@ -1,9 +1,21 @@
-FROM python:3.8-alpine
+FROM python:3.8-slim-buster
 
-WORKDIR /app
+# set work directory
+WORKDIR /usr/src/app
 
-RUN apk update \
-    && apk add --virtual build-deps gcc python3-dev musl-dev \
-    && apk add --no-cache mariadb-dev
+# set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
-RUN apk del build-deps
+RUN apt-get update && apt-get install build-essential libmariadb-dev -y
+
+# install dependencies
+RUN pip install --upgrade pip
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+EXPOSE 5000
+
+CMD ["python", "main.py"]

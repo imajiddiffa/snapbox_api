@@ -1,2 +1,6 @@
+pymysql
 flask-mysqldb
-flask-ext
+flask-mysql
+Flask-Ext
+flask-cors
+gunicorn
